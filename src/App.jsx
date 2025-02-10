@@ -1,11 +1,47 @@
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
-const App = () => {
-  const handleClick = () => {
-    alert("I'm a button!");
+const LoginForm = () => {
+  const [values, setValues] = useState({
+    login: "",
+    password: "",
+  });
+
+  const handleLoginChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value,
+    });
   };
 
-  return <button onClick={handleClick}>Click me!</button>;
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+
+    console.log(values);
+
+    setValues({
+      login: "",
+      password: "",
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="login"
+        value={values.login}
+        onChange={handleLoginChange}
+      />
+      <input
+        type="password"
+        name="password"
+        value={values.password}
+        onChange={handleLoginChange}
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
 };
 
-export default App
+export default LoginForm;
