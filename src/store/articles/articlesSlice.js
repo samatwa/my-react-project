@@ -12,60 +12,70 @@ const articlesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // .addCase(getBooks.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = false;
-      // })
       .addCase(getBooks.fulfilled, (state, { payload }) => {
         state.items = payload;
-        state.loading = false;
       })
-      // .addCase(getBooks.rejected, (state, { payload }) => {
-      //   state.error = true;
-      //   state.errorMessage = payload;
-      //   state.loading = false;
-      //   state.items = [];
-      // })
-      .addCase(getBooks.rejected, (state, action) => {
-        state.error = true;
-        state.loading = false;
-        state.errorMessage = action.error.message;
-        state.items = [];
-      })
-      // .addCase(createBook.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = false;
-      // })
       .addCase(createBook.fulfilled, (state, { payload }) => {
         state.items.push(payload);
-        state.loading = false;
       })
-      .addCase(createBook.rejected, (state) => {
-        state.error = true;
-        state.loading = false;
-        state.items = [];
-      })
-      // .addCase(deleteBook.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = false;
-      // })
       .addCase(deleteBook.fulfilled, (state, { payload }) => {
-        state.items = state.items.filter(book => book.id !== payload.id);
-        state.loading = false;
-      })
-      .addCase(deleteBook.rejected, (state) => {
-        state.error = true;
-        state.loading = false;
-        state.items = [];
+        state.items = state.items.filter((el) => el.id !== payload.id);
       })
       .addMatcher(
-        (action) => {
-          if (action.type.endsWith("/pending")) return true;
-        },
+        ({ type }) => type.endsWith("/pending"),
         (state) => {
+          state.error = false;
           state.loading = true;
         }
+      )
+      .addMatcher(
+        ({ type }) => type.endsWith("/rejected"),
+        (state) => {
+          state.error = true;
+          state.loading = false;
+        }
+      )
+      .addMatcher(
+        ({ type }) => type.endsWith("/fulfilled"),
+        (state) => {
+          state.loading = false;
+          state.error = false;
+        }
       );
+    // .addCase(getBooks.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = false;
+    // })
+    // .addCase(getBooks.rejected, (state, { payload }) => {
+    //   state.error = true;
+    //   state.errorMessage = payload;
+    //   state.loading = false;
+    //   state.items = [];
+    // })
+    // .addCase(getBooks.rejected, (state, action) => {
+    //   state.error = true;
+    //   state.loading = false;
+    //   state.errorMessage = action.error.message;
+    //   state.items = [];
+    // })
+    // .addCase(createBook.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = false;
+    // })
+    // .addCase(createBook.rejected, (state) => {
+    //   state.error = true;
+    //   state.loading = false;
+    //   state.items = [];
+    // })
+    // .addCase(deleteBook.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = false;
+    // })
+    // .addCase(deleteBook.rejected, (state) => {
+    //   state.error = true;
+    //   state.loading = false;
+    //   state.items = [];
+    // })
   },
 });
 

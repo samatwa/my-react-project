@@ -18,7 +18,7 @@ axios.defaults.baseURL = "https://676a8938863eaa5ac0debe88.mockapi.io/";
 // );
 
 export const getBooks = createAsyncThunk("books/getBooks", async () => {
-  const { data } = await axios("books122");
+  const { data } = await axios("books");
   return data;
 });
 
@@ -27,7 +27,7 @@ export const createBook = createAsyncThunk("books/createBook", async (body) => {
   return data;
 });
 
-export const deleteBook = createAsyncThunk("books/deleteBook", async (body) => {
-  const { data } = await axios.post("books", body);
+export const deleteBook = createAsyncThunk("books/deleteBook", async (id) => {
+  const { data } = await axios.delete(`books/${id}`);
   return data;
 });
